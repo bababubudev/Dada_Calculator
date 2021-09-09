@@ -117,6 +117,8 @@ def clear():
 
 #input history store garna
 def store_history(str):
+    #for loop use nagareni huncha kere 
+    #tara just in case while loop le dhost hancha ki vanera
     for amount in range(0, 1):
         history.append(str)
 
