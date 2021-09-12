@@ -21,13 +21,13 @@ def check_response(player_input) -> object:
     response_n = ["no", "nah", "sorry"]
 
     modified_input = player_input.split()[0].lower()
-    amount_of_responses = len(response_p) if len(response_p) > len(response_n) else len(response_n)
+    amount_of_responses = max(len(response_p), len(response_n))
     amount_of_spaces = player_input.count(" ")
     amount_of_words = player_input.count(" ") + 1
 
     looper = 0 if amount_of_spaces == 0 else 1
-    for looping in range (0, amount_of_words):
-        for extern in range(0, amount_of_responses):
+    for _ in range(amount_of_words):
+        for extern in range(amount_of_responses):
             if extern == 0: intern = 0
             if len(modified_input) <= 1:
                 first_char = " "
@@ -40,14 +40,15 @@ def check_response(player_input) -> object:
                 if response_p[extern].find(second_char) == modified_input.find(second_char):
                     return 1, response_p[extern]
             else:
-                for intern in range(0, len(response_n)):
-                    if response_n[intern].startswith(first_char):
-                        if response_n[intern].find(second_char) == modified_input.find(second_char):
-                            return -1, response_n[intern]
-        
+                for item in response_n:
+                    if item.startswith(first_char) and item.find(
+                        second_char
+                    ) == modified_input.find(second_char):
+                        return -1, item
+
         if amount_of_spaces == 0:
             return 0, " "
-        
+
         #looper vanni iterator use garera appropriate space haru ma split() garcha
         #yesto vaesi lamo sentence lekheni sentence bata response khojcha
         #//Q: iterator lai 0 assign nagarikana for loop lai ajhai continiously loop kasari garauni ho?
@@ -81,15 +82,16 @@ def respond_response(str):
 #//Q: for loop bata dictionary read garna tellai list ma cast gare. arko ramro upae chaina?
 def sort_input(input_value) -> object:
     operators = ["+", "-", "*", "/", "^", "%"]
-    operator_dictionary = dict()
-    num_value_dictionary = dict()
-    
-    for k, operator_values in enumerate(input_value):
-        if input_value[k] in operators:
-            operator_dictionary[k] = operator_values
-    
+    num_value_dictionary = {}
+
+    operator_dictionary = {
+        k: operator_values
+        for k, operator_values in enumerate(input_value)
+        if input_value[k] in operators
+    }
+
     list_of_operators = list(operator_dictionary)
-    
+
     range_iterator = 0
     for l in range(len(operator_dictionary) + 1):
         if l >= len(list_of_operators):
@@ -99,6 +101,7 @@ def sort_input(input_value) -> object:
             range_iterator = list_of_operators[l] + 1
 
     return operator_dictionary, num_value_dictionary
+
 
 #yo chai call vai rakhcha unless user inputs the right command
 def ask_response() -> int:
@@ -110,16 +113,13 @@ def ask_response() -> int:
 #system.cls use garna
 def clear():
     cleared = True
-    if name == 'nt':
-        _ = system('cls')
-    else:
-        _ = system('clear')
+    _ = system('cls') if name == 'nt' else system('clear')
 
 #input history store garna
 def store_history(str):
-    #for loop use nagareni huncha kere 
+    #for loop use nagareni huncha kere      
     #tara just in case while loop le dhost hancha ki vanera
-    for amount in range(0, 1):
+    for _ in range(1):
         history.append(str)
 
 #dictionary banaera sajilo huncha vanera command list dekhauna
@@ -154,7 +154,7 @@ while True:
         if result - int(result) == 0: result = int(result)
         output = f"\n [ {calculation} = {result} ] \n"
         store_history(output)
-        print(output)        
+        print(output)
     except:
         #yo ta full on hardcoding. if statement ra while statement le varrecha
         value = 0
@@ -166,17 +166,16 @@ while True:
                 if value == -1:
                     want_to_pass = True
                 elif value == 1:
-                    for timing in range(0, 5):
+                    for timing in range(5):
                         b = "Shutting down in: " + (f" {5 - timing}")
                         print (b, end="\r")
                         time.sleep(1)
                     want_to_break = True
-            if want_to_pass : pass
             if want_to_break : break
         elif calculation == command_dic[commands[1]].lower():
             clear()
         elif calculation == command_dic[commands[2]].lower():
-            if len(history) != 0:
+            if not history:
                 for element in history:
                     print(element)
             else:
@@ -185,12 +184,11 @@ while True:
             history.clear()
             print("History cleared.\n")
         elif calculation == command_dic[commands[4]].lower():
-            for cmd in range(len(commands)):
-                print ("[", command_dic[commands[cmd]], "] = ", commands[cmd])
+            for cmd in commands:
+                print ("[", command_dic[cmd], "] = ", cmd)
             print("\n")
         elif calculation == command_dic[commands[5]].lower():
             print ("Force ending...\n")
             break
         else:
             print(f"\nInvalid input operation: [ {calculation} ]. \nType \"cmdl\" to check the command list \n")
-            pass
