@@ -2,20 +2,17 @@ import operator
 import time
 from os import system, name
 
-#input gareko string lai operator ma badlina mildo raincha-
-#teivara operator vanni use gare.
 ops = {
     '+' : operator.add,
     '-' : operator.sub,
     '*' : operator.mul,
-    '/' : operator.truediv,  # use operator.div for Python 2
+    '/' : operator.truediv,
     '%' : operator.mod,
     '^' : operator.pow,
 }
 
 calculation = ""
 
-#input response ko first 2 char liyera value ra string tuple return garcha
 def check_response(player_input) -> object:
     response_p = ["yes", "sure", "okay", "alright", "aight", "go"]
     response_n = ["no", "nah", "sorry"]
@@ -49,23 +46,22 @@ def check_response(player_input) -> object:
         if amount_of_spaces == 0:
             return 0, " "
 
-        #looper vanni iterator use garera appropriate space haru ma split() garcha
-        #yesto vaesi lamo sentence lekheni sentence bata response khojcha
-        #//Q: iterator lai 0 assign nagarikana for loop lai ajhai continiously loop kasari garauni ho?
         modified_input = player_input.split()[looper].lower() if (amount_of_spaces > 0) else modified_input.lower()
         looper += 1
         extern = 0
 
 
-#mathi ko method call garcha ani value ra string assign garcha
-#teti interesting chaina. if statement le varrecha
 def respond_response(str):
     value, string = check_response(str)
 
     print("[", end='')
     if value == 1:
         if len(str) == len(string):
-            print(f"Ok see you I guess... You could have just pressed the X up there but whatever.", end='')
+            print(
+                'Ok see you I guess... You could have just pressed the X up there but whatever.',
+                end='',
+            )
+
         else:
             print(f"{str.capitalize()}? You mean { string.upper()}? Alright, whatever you say man.", end='')
     elif value == -1:
@@ -78,8 +74,6 @@ def respond_response(str):
     print("]")
 
 
-#input gareko value lai operator ra num_value dictionary ma assign garcha
-#//Q: for loop bata dictionary read garna tellai list ma cast gare. arko ramro upae chaina?
 def sort_input(input_value) -> object:
     operators = ["+", "-", "*", "/", "^", "%"]
     num_value_dictionary = {}
@@ -103,26 +97,20 @@ def sort_input(input_value) -> object:
     return operator_dictionary, num_value_dictionary
 
 
-#yo chai call vai rakhcha unless user inputs the right command
 def ask_response() -> int:
     new_player_input = str(input(f"\nAre you sure you want to {calculation}? : "))
     value, string = check_response(new_player_input)
     respond_response(new_player_input)
     return value
 
-#system.cls use garna
 def clear():
     cleared = True
     _ = system('cls') if name == 'nt' else system('clear')
 
-#input history store garna
 def store_history(str):
-    #for loop use nagareni huncha kere      
-    #tara just in case while loop le dhost hancha ki vanera
     for _ in range(1):
         history.append(str)
 
-#dictionary banaera sajilo huncha vanera command list dekhauna
 command_dic = {
     "Close program." : "end",
     "Clear screen." : "clear",
@@ -135,10 +123,9 @@ command_dic = {
 commands = list(command_dic)
 history = []
 
-print(f"\nType \"cmdl\" to see the list of commands.")
+print('\nType "cmdl" to see the list of commands.')
 
 while True:
-    #try catch block
     try:
         calculation = input ("Input: ").lower()
         operator_dic, value_dic = sort_input(calculation)
@@ -156,7 +143,6 @@ while True:
         store_history(output)
         print(output)
     except:
-        #yo ta full on hardcoding. if statement ra while statement le varrecha
         value = 0
         want_to_break = False
         want_to_pass = False
