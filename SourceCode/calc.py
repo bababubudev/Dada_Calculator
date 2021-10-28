@@ -158,8 +158,7 @@ while True:
                         time.sleep(1)
                     want_to_break = True
             if want_to_break : break
-        elif calculation == command_dic[commands[1]].lower():
-            clear()
+        elif calculation == command_dic[commands[1]].lower(): clear()
         elif calculation == command_dic[commands[2]].lower():
             if not history:
                 for element in history:
